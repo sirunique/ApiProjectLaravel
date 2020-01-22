@@ -21,7 +21,14 @@ Route::post('login', 'UserController@login');
 Route::post('register', 'UserController@register');
 
 Route::group(['middleware' => 'auth.jwt'], function(){
-    Route::get('user', 'UserController@getCurrentUser');
-    Route::post('update', 'UserController@update');
     Route::get('logout', 'UserController@logout');
+    Route::get('user', 'UserController@getAuthUser');
+
+    Route::get('products', 'ProductController@index');
+    Route::get('products/{id}', 'ProductController@show');
+    Route::post('products', 'ProductController@store');
+    Route::put('products/{id}', 'ProductController@update');
+    Route::delete('products/{id}', 'ProductController@destroy');
+
+
 });

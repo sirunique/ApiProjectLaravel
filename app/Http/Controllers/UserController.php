@@ -12,18 +12,13 @@ class UserController extends Controller
 {
     public function register(Request $request){
         $this->validate($request, [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'phone' => 'required',
+            'name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required',
+            'password' => 'required|min:5',
         ]);
         
         $user = new User();
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->firstname = $request->firstname;
-        $user->phone = $request->phone;
+        $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
@@ -66,15 +61,31 @@ class UserController extends Controller
         }
     }
 
-    public function getCurrentUser(Request $request){
+    public function getAuthUser(Request $request){
         $this->validate($request, [
             'token' => 'required'
         ]);
         $user = JWTAuth::authenticate($request->token);
-        return $user;
+        return response()->json(['user' => $user]);
     }
 
     // public function update(Request $request){
-        
+    //     $user = $this->getCurrentUser($request);
+    //     if(!$user){
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'User not found'
+    //         ]);
+    //     }
+
+    //     unset($data['token']);
+    //     $updateUser = User::where('id', $user->id)->update($data);
+    //     $user = User::find($user->id);
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Information has been updated successfully!',
+    //         'user' => $user
+    //     ]);  
     // }
 }

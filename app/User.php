@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
    Protected  $fillable = [
-   		'firstname','lastname','email','phone','password',
+   		'name','email','password',
    ];
 
    Protected $hidden = [
@@ -33,5 +33,9 @@ class User extends Authenticatable implements JWTSubject
 //            $this->attributes['password'] = bcrypt($password);
 //        }
 //    }
+
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
 
 }
